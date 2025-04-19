@@ -88,7 +88,7 @@ output_directory/
 
 ## Author
 
-- **incogbyte** - [@incogbyte](https://twitter.com/incogbyte)
+- **incogbyte** - [@incogbyte](https://x.com/incogbyte)
 
 ## License
 

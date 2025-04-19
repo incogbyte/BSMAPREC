@@ -15,7 +15,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
 }
 
-// ─── Compatibilidade Java ───
+
 sourceCompatibility = '17'
 targetCompatibility = '17'
 
@@ -51,7 +51,7 @@ shadowJar {
     archiveVersion.set(project.version.toString())
 
     dependencies {
-        // não inclui a API do Burp no jar
+        
         exclude(dependency('net.portswigger.burp.extender:burp-extender-api:2.3'))
     }
 

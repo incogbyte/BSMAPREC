@@ -105,3 +105,12 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Burp Suite @portswigger
 - https://github.com/denandz/sourcemapper @denandz
 - @S41nt
+
+
+
+
+### TODO 
+
+- [ ] Save by domain and list by domain at UI and (saved) folder
+
+

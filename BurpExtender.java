@@ -520,17 +520,31 @@ public List<IScanIssue> doPassiveScan(IHttpRequestResponse baseRequestResponse) 
         saveSourceMap(url, files, savedFiles, failedFiles, totalFiles);
     }
     
-    private void saveSourceMap(URL url, List<SourceFile> files, 
-                              AtomicInteger savedFiles, AtomicInteger failedFiles, AtomicInteger totalFiles) {
+    private void saveSourceMap(URL url, List<SourceFile> files,
+                               AtomicInteger savedFiles, AtomicInteger failedFiles, AtomicInteger totalFiles) {
         if (files == null || files.isEmpty()) {
             log("No files to save for URL: " + url);
             return;
         }
+
+        // Create directory structure based on domain
+        String domain = url.getHost();
+        String safeDomain = domain.replaceAll("[^a-zA-Z0-9.-]", "_");
+        File domainDir = new File(saveDir, safeDomain);
+        File sourceMapsDir = new File(domainDir, "sourceMapsExtracted");
         
-        String rel = url.getPath().replaceFirst("^/", "");
-        File dir = new File(saveDir, rel);
-        dir.mkdirs();
-        
+        if (!sourceMapsDir.exists() && !sourceMapsDir.mkdirs()) {
+            log("Error creating directory: " + sourceMapsDir.getAbsolutePath());
+            failedFiles.addAndGet(files.size());
+            return;
+        }
+
+        // Create a subdirectory for this specific source map
+        String path = url.getPath();
+        String safePath = path.replaceFirst("^/", "").replaceAll("[^a-zA-Z0-9./-]", "_");
+        File mapDir = new File(sourceMapsDir, safePath);
+        mapDir.mkdirs();
+
         for (SourceFile sf : files) {
             try {
                 if (sf.getContent() == null || sf.getContent().isEmpty()) {
@@ -538,8 +552,8 @@ public List<IScanIssue> doPassiveScan(IHttpRequestResponse baseRequestResponse) 
                     failedFiles.incrementAndGet();
                     continue;
                 }
-                
-                File out = new File(dir, sf.getPath());
+
+                File out = new File(mapDir, sf.getPath());
                 out.getParentFile().mkdirs();
                 
                 try (PrintWriter pw = new PrintWriter(out, "UTF-8")) {
@@ -559,7 +573,7 @@ public List<IScanIssue> doPassiveScan(IHttpRequestResponse baseRequestResponse) 
             }
         }
         
-        log("Saved " + savedFiles.get() + " source files for " + url + " to: " + dir.getAbsolutePath());
+        log("Saved " + savedFiles.get() + " source files for " + url + " to: " + mapDir.getAbsolutePath());
         if (failedFiles.get() > 0) {
             log("Failed to save " + failedFiles.get() + " files for " + url);
         }

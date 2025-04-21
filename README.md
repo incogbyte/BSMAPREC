@@ -55,6 +55,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 21.0.5+9-LTS-239, mixed mode, sharing)
 2. Build the project:
    ```bash
    mvn clean package
+   gradle clean build
    ```
 
 3. The compiled JAR will be available in the `target` directory

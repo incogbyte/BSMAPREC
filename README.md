@@ -86,6 +86,12 @@ output_directory/
       └── source_files/
 ```
 
+# VIDEO 
+
+<a href="https://www.youtube.com/watch?v=Qm_DqhhrS28)">
+  <img src="https://img.youtube.com/vi/Qm_DqhhrS28/maxresdefault.jpg" alt="Video Title" width="600" height="340">
+</a>
+
 ## Author
 
 - **incogbyte** - [@incogbyte](https://x.com/incogbyte)
